@@ -83,15 +83,6 @@ export function ProductGrid({
                   isOutOfStock && "opacity-75"
                 )}
               >
-                {/* Promo Badge */}
-                {product.isPromo && (
-                  <div className="absolute top-2 left-2 z-10">
-                    <Badge className="bg-destructive text-white font-semibold">
-                      Oferta
-                    </Badge>
-                  </div>
-                )}
-
                 {/* Image - Clickable */}
                 <Link href={`/catalogo/${product.id}`}>
                   <div className="relative aspect-square overflow-hidden bg-secondary/30 cursor-pointer">
@@ -107,6 +98,15 @@ export function ProductGrid({
                     )}
                   </div>
                 </Link>
+
+                {/* Promo Badge - Below image on mobile to prevent overlap */}
+                {product.isPromo && (
+                  <div className="sm:absolute sm:top-2 sm:left-2 sm:z-10 px-3 py-1 sm:p-0">
+                    <Badge className="bg-destructive text-white font-semibold text-xs">
+                      Oferta
+                    </Badge>
+                  </div>
+                )}
 
                 {/* Content */}
                 <div className="flex flex-1 flex-col p-3 sm:p-4">

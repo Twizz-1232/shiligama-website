@@ -167,34 +167,27 @@ export function CatalogNavbar({ cartCount, searchQuery, onSearchChange }: Catalo
                 <SheetHeader>
                   <SheetTitle>Menu</SheetTitle>
                 </SheetHeader>
-                <nav className="flex flex-col gap-4 py-6">
+                <nav className="flex flex-col gap-2 py-6">
                   <Link
                     href="/catalogo"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-foreground hover:bg-secondary transition-colors"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-foreground hover:bg-secondary active:bg-primary/20 active:scale-[0.98] transition-all duration-150"
                   >
                     <ShoppingCart className="h-5 w-5" />
                     Catalogo
                   </Link>
                   <Link
                     href="/ofertas"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-foreground hover:bg-secondary transition-colors"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-foreground hover:bg-secondary active:bg-primary/20 active:scale-[0.98] transition-all duration-150"
                   >
                     <Tag className="h-5 w-5" />
                     Ofertas
                   </Link>
                   <Link
                     href="/mis-pedidos"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-foreground hover:bg-secondary transition-colors"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-foreground hover:bg-secondary active:bg-primary/20 active:scale-[0.98] transition-all duration-150"
                   >
                     <Package className="h-5 w-5" />
                     Mis Pedidos
-                  </Link>
-                  <Link
-                    href="/configuracion"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-foreground hover:bg-secondary transition-colors"
-                  >
-                    <Settings className="h-5 w-5" />
-                    Configuracion
                   </Link>
                 </nav>
               </SheetContent>
