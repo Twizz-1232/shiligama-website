@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useCart } from "@/hooks/use-cart"
 import { CatalogNavbar } from "@/components/catalog/catalog-navbar"
 import { CategorySidebar } from "@/components/catalog/category-sidebar"
 import { ProductGrid } from "@/components/catalog/product-grid"
@@ -11,11 +12,7 @@ export default function CatalogoPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100])
   const [searchQuery, setSearchQuery] = useState("")
-  const [cartCount, setCartCount] = useState(3)
-
-  const handleAddToCart = () => {
-    setCartCount((prev) => prev + 1)
-  }
+  const { cartCount, addToCart } = useCart()
 
   return (
     <div className="min-h-screen bg-background">
@@ -55,7 +52,7 @@ export default function CatalogoPage() {
               selectedCategory={selectedCategory}
               priceRange={priceRange}
               searchQuery={searchQuery}
-              onAddToCart={handleAddToCart}
+              onAddToCart={addToCart}
             />
           </div>
         </div>

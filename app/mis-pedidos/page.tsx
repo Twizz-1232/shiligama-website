@@ -24,6 +24,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useRouter } from "next/navigation"
+import { useCart } from "@/hooks/use-cart"
 
 interface Order {
   id: string
@@ -91,6 +92,7 @@ const statusConfig = {
 export default function MisPedidosPage() {
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null)
   const router = useRouter()
+  const { cartCount } = useCart()
 
   const toggleOrder = (orderId: string) => {
     setExpandedOrder(expandedOrder === orderId ? null : orderId)
@@ -128,6 +130,11 @@ export default function MisPedidosPage() {
               <Link href="/checkout">
                 <Button variant="ghost" size="icon" className="relative">
                   <ShoppingCart className="h-5 w-5" />
+                  {cartCount > 0 && (
+                    <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                      {cartCount > 99 ? "99+" : cartCount}
+                    </span>
+                  )}
                   <span className="sr-only">Carrito</span>
                 </Button>
               </Link>

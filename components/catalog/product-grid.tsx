@@ -12,7 +12,7 @@ interface ProductGridProps {
   selectedCategory: string | null
   priceRange: [number, number]
   searchQuery: string
-  onAddToCart: () => void
+  onAddToCart: (item: { id: number; name: string; price: number; image: string }) => void
 }
 
 export function ProductGrid({
@@ -147,7 +147,12 @@ export function ProductGrid({
                     disabled={isOutOfStock}
                     onClick={(e) => {
                       e.preventDefault()
-                      onAddToCart()
+                      onAddToCart({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                      })
                     }}
                   >
                     <Plus className="h-4 w-4" />
