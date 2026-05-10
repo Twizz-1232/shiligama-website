@@ -57,10 +57,11 @@ export function PromotionsBanner() {
         {promotions.map((promo) => {
           const Icon = promo.icon
           return (
-            <div
+            <Link
               key={promo.id}
+              href="/ofertas"
               className={cn(
-                "min-w-full bg-gradient-to-r px-6 py-8 sm:px-10 sm:py-10",
+                "min-w-full bg-gradient-to-r px-6 py-8 sm:px-10 sm:py-10 cursor-pointer block",
                 promo.gradient
               )}
             >
@@ -78,15 +79,11 @@ export function PromotionsBanner() {
                     </p>
                   </div>
                 </div>
-                <Button
-                  variant="secondary"
-                  className="hidden sm:flex bg-white text-primary hover:bg-white/90 font-semibold"
-                  asChild
-                >
-                  <Link href="/ofertas">Ver ofertas</Link>
-                </Button>
+                <span className="hidden sm:flex bg-white text-primary hover:bg-white/90 font-semibold px-4 py-2 rounded-md text-sm">
+                  Ver ofertas
+                </span>
               </div>
-            </div>
+            </Link>
           )
         })}
       </div>
