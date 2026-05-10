@@ -20,6 +20,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 interface CatalogNavbarProps {
   cartCount: number
@@ -28,6 +29,17 @@ interface CatalogNavbarProps {
 }
 
 export function CatalogNavbar({ cartCount, searchQuery, onSearchChange }: CatalogNavbarProps) {
+  const router = useRouter()
+
+  const handleLogout = () => {
+    // Clear any session/auth data
+    localStorage.removeItem("user")
+    localStorage.removeItem("token")
+    sessionStorage.clear()
+    // Redirect to login page
+    router.push("/")
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-card shadow-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -136,7 +148,7 @@ export function CatalogNavbar({ cartCount, searchQuery, onSearchChange }: Catalo
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive">
+                <DropdownMenuItem className="text-destructive cursor-pointer" onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Cerrar Sesion
                 </DropdownMenuItem>
