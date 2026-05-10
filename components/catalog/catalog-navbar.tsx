@@ -122,32 +122,45 @@ export function CatalogNavbar({ cartCount, searchQuery, onSearchChange }: Catalo
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm font-medium">Juan Perez</p>
-                    <p className="text-xs text-muted-foreground">juan@email.com</p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/mis-pedidos">
-                    <Package className="mr-2 h-4 w-4" />
-                    Mis Pedidos
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/ofertas">
-                    <Tag className="mr-2 h-4 w-4" />
-                    Ofertas
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/configuracion">
-                    <Settings className="mr-2 h-4 w-4" />
-                    Configuracion
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
+                {/* Desktop: Full menu */}
+                <div className="hidden lg:block">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-sm font-medium">Juan Perez</p>
+                      <p className="text-xs text-muted-foreground">juan@email.com</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/mis-pedidos">
+                      <Package className="mr-2 h-4 w-4" />
+                      Mis Pedidos
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/ofertas">
+                      <Tag className="mr-2 h-4 w-4" />
+                      Ofertas
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/configuracion">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Configuracion
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                </div>
+                {/* Mobile/Tablet: Only logout */}
+                <div className="lg:hidden">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-sm font-medium">Juan Perez</p>
+                      <p className="text-xs text-muted-foreground">juan@email.com</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                </div>
                 <DropdownMenuItem className="text-destructive cursor-pointer" onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Cerrar Sesion
@@ -188,6 +201,13 @@ export function CatalogNavbar({ cartCount, searchQuery, onSearchChange }: Catalo
                   >
                     <Package className="h-5 w-5" />
                     Mis Pedidos
+                  </Link>
+                  <Link
+                    href="/configuracion"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-foreground hover:bg-secondary active:bg-primary/20 active:scale-[0.98] transition-all duration-150"
+                  >
+                    <Settings className="h-5 w-5" />
+                    Configuracion
                   </Link>
                 </nav>
               </SheetContent>
