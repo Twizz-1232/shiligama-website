@@ -2,12 +2,21 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Package, Truck, CheckCircle, Clock, ChevronDown, ChevronUp, ShoppingCart, User, LogOut, Settings, Tag, Menu } from "lucide-react"
+import { Package, Truck, CheckCircle, Clock, ChevronDown, ChevronUp, ShoppingCart, User, LogOut, Settings, Tag, Menu, XCircle, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,10 +35,12 @@ import {
 import { useRouter } from "next/navigation"
 import { useCart } from "@/hooks/use-cart"
 
+type OrderStatus = "pendiente" | "en_preparacion" | "en_camino" | "entregado" | "cancelado"
+
 interface Order {
   id: string
   date: string
-  status: "pendiente" | "en_camino" | "entregado"
+  status: OrderStatus
   total: number
   items: {
     name: string
@@ -71,11 +82,16 @@ const orders: Order[] = [
   },
 ]
 
-const statusConfig = {
+const statusConfig: Record<OrderStatus, { label: string; icon: typeof Clock; color: string }> = {
   pendiente: {
     label: "Pendiente",
     icon: Clock,
     color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20",
+  },
+  en_preparacion: {
+    label: "En preparacion",
+    icon: Package,
+    color: "bg-orange-500/10 text-orange-600 border-orange-500/20",
   },
   en_camino: {
     label: "En camino",
@@ -87,12 +103,39 @@ const statusConfig = {
     icon: CheckCircle,
     color: "bg-primary/10 text-primary border-primary/20",
   },
+  cancelado: {
+    label: "Cancelado",
+    icon: XCircle,
+    color: "bg-destructive/10 text-destructive border-destructive/20",
+  },
 }
 
 export default function MisPedidosPage() {
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null)
+  const [statusFilter, setStatusFilter] = useState<string>("todos")
+  const [dateFrom, setDateFrom] = useState<string>("")
+  const [dateTo, setDateTo] = useState<string>("")
   const router = useRouter()
   const { cartCount } = useCart()
+
+  // Filter orders based on status and date range
+  const filteredOrders = orders.filter((order) => {
+    // Status filter
+    if (statusFilter !== "todos" && order.status !== statusFilter) {
+      return false
+    }
+    // Date range filter
+    const orderDate = new Date(order.date)
+    if (dateFrom) {
+      const fromDate = new Date(dateFrom)
+      if (orderDate < fromDate) return false
+    }
+    if (dateTo) {
+      const toDate = new Date(dateTo)
+      if (orderDate > toDate) return false
+    }
+    return true
+  })
 
   const toggleOrder = (orderId: string) => {
     setExpandedOrder(expandedOrder === orderId ? null : orderId)
@@ -227,20 +270,89 @@ export default function MisPedidosPage() {
 
       {/* Content */}
       <main className="mx-auto max-w-3xl px-4 py-6 sm:px-6 lg:px-8">
-        {orders.length === 0 ? (
+        {/* Page Title - Desktop */}
+        <h1 className="hidden sm:block text-2xl font-bold text-foreground mb-6">Mis Pedidos</h1>
+
+        {/* Filters */}
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="flex flex-col sm:flex-row gap-4">
+              {/* Status Filter */}
+              <div className="flex-1">
+                <Label htmlFor="status-filter" className="text-sm font-medium mb-2 block">
+                  Estado
+                </Label>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger id="status-filter">
+                    <SelectValue placeholder="Todos los estados" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="todos">Todos los estados</SelectItem>
+                    <SelectItem value="pendiente">Pendiente</SelectItem>
+                    <SelectItem value="en_preparacion">En preparacion</SelectItem>
+                    <SelectItem value="en_camino">En camino</SelectItem>
+                    <SelectItem value="entregado">Entregado</SelectItem>
+                    <SelectItem value="cancelado">Cancelado</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Date From */}
+              <div className="flex-1">
+                <Label htmlFor="date-from" className="text-sm font-medium mb-2 block">
+                  Desde
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="date-from"
+                    type="date"
+                    value={dateFrom}
+                    onChange={(e) => setDateFrom(e.target.value)}
+                    className="w-full"
+                  />
+                </div>
+              </div>
+
+              {/* Date To */}
+              <div className="flex-1">
+                <Label htmlFor="date-to" className="text-sm font-medium mb-2 block">
+                  Hasta
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="date-to"
+                    type="date"
+                    value={dateTo}
+                    onChange={(e) => setDateTo(e.target.value)}
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {filteredOrders.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <Package className="h-16 w-16 text-muted-foreground/50 mb-4" />
-            <h3 className="text-lg font-medium text-foreground">No tienes pedidos</h3>
+            <h3 className="text-lg font-medium text-foreground">
+              {orders.length === 0 ? "No tienes pedidos" : "No se encontraron pedidos"}
+            </h3>
             <p className="text-sm text-muted-foreground mt-1 mb-4">
-              Cuando realices un pedido, aparecera aqui
+              {orders.length === 0 
+                ? "Cuando realices un pedido, aparecera aqui"
+                : "Intenta cambiar los filtros de busqueda"
+              }
             </p>
-            <Link href="/catalogo">
-              <Button>Ir al catalogo</Button>
-            </Link>
+            {orders.length === 0 && (
+              <Link href="/catalogo">
+                <Button>Ir al catalogo</Button>
+              </Link>
+            )}
           </div>
         ) : (
           <div className="space-y-4">
-            {orders.map((order) => {
+            {filteredOrders.map((order) => {
               const status = statusConfig[order.status]
               const StatusIcon = status.icon
               const isExpanded = expandedOrder === order.id
