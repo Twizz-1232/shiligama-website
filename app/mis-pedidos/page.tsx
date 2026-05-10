@@ -2,12 +2,13 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ArrowLeft, Package, Truck, CheckCircle, Clock, ChevronDown, ChevronUp } from "lucide-react"
+import { Package, Truck, CheckCircle, Clock, ChevronDown, ChevronUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
+import { CatalogNavbar } from "@/components/catalog/catalog-navbar"
 
 interface Order {
   id: string
@@ -81,19 +82,8 @@ export default function MisPedidosPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-card shadow-sm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center gap-4">
-            <Link href="/catalogo">
-              <Button variant="ghost" size="icon">
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            </Link>
-            <h1 className="text-xl font-bold text-foreground">Mis Pedidos</h1>
-          </div>
-        </div>
-      </header>
+      {/* Navbar */}
+      <CatalogNavbar cartCount={0} searchQuery="" onSearchChange={() => {}} />
 
       {/* Content */}
       <main className="mx-auto max-w-3xl px-4 py-6 sm:px-6 lg:px-8">
