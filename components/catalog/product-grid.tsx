@@ -129,12 +129,17 @@ export function ProductGrid({
                   </Link>
 
                   {/* Price */}
-                  <div className="mt-auto flex items-baseline gap-2">
+                  <div className={cn(
+                    "mt-auto",
+                    product.originalPrice 
+                      ? "flex flex-col sm:flex-row sm:items-baseline sm:gap-2" 
+                      : "flex items-baseline gap-2"
+                  )}>
                     <span className="text-lg font-bold text-primary">
                       S/. {product.price.toFixed(2)}
                     </span>
                     {product.originalPrice && (
-                      <span className="text-sm text-muted-foreground line-through">
+                      <span className="text-xs sm:text-sm text-muted-foreground line-through">
                         S/. {product.originalPrice.toFixed(2)}
                       </span>
                     )}
